@@ -8,5 +8,6 @@ Pipfile.lock
 
 # SQLite3 database
 *.sqlite
+ecom/db.sqlite3
 
 

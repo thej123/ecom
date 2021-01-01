@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 from .serializers import UserSerializer
 from .models import CustomUser
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import login, logout
@@ -68,6 +68,7 @@ def signin(request):
     except UserModel.DoesNotExist:
         return JsonResponse({'error': 'Invalid Email'})
 
+# id is captured through the url in urls.py
 def signout(request, id):
     # Django built in logout method
     logout(request)
@@ -86,16 +87,17 @@ def signout(request, id):
     return JsonResponse({'success': 'Logout sucess'})
 
 # This allow us to give full permission to all users. Can be customized for SuperUser etc
+# Used in urls.py
 class UserViewSet(viewsets.ModelViewSet):
     permission_classes_by_action = {'create': [AllowAny]}
 
     queryset = CustomUser.objects.all().order_by('id')
-    serializers_class = UserSerializer
+    serializer_class = UserSerializer
 
     def get_permissions(self):
         try:
             return [permission() for permission in self.permission_classes_by_action[self.action]]
         except KeyError:
-            return [permission() for permission in self.permission_classes_by_action]
+            return [permission() for permission in self.permission_classes]
 
 

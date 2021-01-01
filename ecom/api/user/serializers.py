@@ -32,4 +32,4 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = CustomUser
         extra_kwargs = {'password': {'write_only': True}}
         # is_staff, is_superuser comes from AbstarctUser class which we inherited in CustomUser
-        field = ('name', 'email', 'password', 'phone', 'gender', 'is_active', 'is_staff', 'is_superuser')
+        fields = ('name', 'email', 'password', 'phone', 'gender', 'is_active', 'is_staff', 'is_superuser')

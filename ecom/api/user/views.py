@@ -27,11 +27,12 @@ def signin(request):
     if not request.method == 'POST':
         return JsonResponse({'error': 'Send a post request with valid parameter only'})
     
+    # This is expecting input as FORM data format instead of JSON format
     username = request.POST['email']
     password = request.POST['password']
 
     # validation part
-    if not re.match("([\w\.\-_]+)?\w+@[\w-_]+(\.\w+){1,}", username):
+    if not re.match("^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$", username):
         return JsonResponse({'error': 'Enter a valid email'})
     
     if len(password) < 3:
@@ -40,10 +41,10 @@ def signin(request):
     UserModel = get_user_model()
 
     try:
-        user = UserModel.objects.all(email=username)
+        user = UserModel.objects.get(email=username)
         # check_password() is built in method of django 3
         if user.check_password(password):
-            usr_dict = UserModel.object.filter(email=username).values().first()
+            usr_dict = UserModel.objects.filter(email=username).values().first()
             # we pop out the password because we will returning the rest of back to the frontend
             usr_dict.pop('password')
             

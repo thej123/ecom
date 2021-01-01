@@ -9,7 +9,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     def create(self, validated_data):
         # we pop the password since it has to be saved using set_password
         password = validated_data.pop('password', None)
-        instance = self.Meta.model(**validated_date)
+        instance = self.Meta.model(**validated_data)
 
         # password can only be set through set_password method
         if password is not None:

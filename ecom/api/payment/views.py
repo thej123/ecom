@@ -35,3 +35,28 @@ def generate_token(request, id, token):
     
     return JsonResponse({'cient_token': gateway.client_token.generate(), 'success': True})
 
+@csrf_exempt
+def process_payment(request, id, token):
+    if not validate_user_session(id, token):
+        return JsonResponse({'error': 'Invalid session. Please login again!'})
+
+    nonce_from_the_client = request.POST['paymentMethodNonce']
+    amoutn_from_the_client = request.POST['amount']
+
+    # Built in method of gateway
+    result = gateway.trasaction.sale({
+        "amount": amoutn_from_the_client,
+        "payment_method_nonce" : nonce_from_the_client,
+        "options": {
+            "submit_for_settlement": True
+        }
+    })
+    # `is_success` is returned in the result object by braintree
+    if result.is_success:
+        return JsonResponse({
+            'success': result.is_success,
+            'transaction': {'id': result.trasaction_id, 'amount': result.transaction.amount
+        })
+    else:
+        return JsonResponse({'error': True, 'success': False})
+            

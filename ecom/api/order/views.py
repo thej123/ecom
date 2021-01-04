@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
 from .serializers import OrderSerializer
-from .Order import Order
+from .models import Order
 from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
@@ -49,4 +49,4 @@ def add(request, id, token):
 # This by default gives all the CRUD capabilities for Order model
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all().order_by('id')
-    serializer_class = OrderSerializers
+    serializer_class = OrderSerializer

@@ -27,6 +27,7 @@ def signin(request):
     if not request.method == 'POST':
         return JsonResponse({'error': 'Send a post request with valid parameter only'})
     
+    print(request.body)
     # This is expecting input as FORM data format instead of JSON format
     username = request.POST['email']
     password = request.POST['password']

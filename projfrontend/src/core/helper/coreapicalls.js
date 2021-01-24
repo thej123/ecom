@@ -1,9 +1,10 @@
-import {API} from "../../backend"
+import { API } from "../../backend"
 
+//Method
 export const getProducts = () => {
     return fetch(`${API}product`, {method: "GET"})
-    .then(response => {
+    .then((response) => {
         return response.json();
     })
-    .catch(err => console.log(err))
+    .catch((err) => console.log(err))
 }

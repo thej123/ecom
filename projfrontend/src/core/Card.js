@@ -1,9 +1,10 @@
 import React from 'react'
 import ImageHelper from './helper/imageHelper'
 import {Redirect} from 'react-router-dom'
+import {addItemToCart} from './helper/cartHelper'
 
 // TODO: Deal with this later
-const isAuthenticated = false
+const isAuthenticated = true
 
 
 const Card = ({
@@ -19,14 +20,15 @@ const Card = ({
 
     const addToCart = () => {
         if (isAuthenticated) {
+            addItemToCart(product, () => {})
             console.log("Added to cart")
         } else {
             console.log("Login Please!")
         }
     }
 
-    const getAredirect = Redirect => {
-        if (Redirect) {
+    const getAredirect = redirect => {
+        if (redirect) {
             return <Redirect to="/cart" />
         }
     }
@@ -34,7 +36,7 @@ const Card = ({
     const showAddToCart = addToCart => {
         return (
             // If addToCart is true then return the button. PS the html will always be true.
-            addToCart && (
+            addtoCart && (
                 <button
                     onClick={addToCart}
                     className="btn btn-block btn-outline-success mt-2 mb-2"

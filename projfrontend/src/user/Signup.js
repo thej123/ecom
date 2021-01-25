@@ -28,6 +28,40 @@ const Signup = () => {
             setValues({...values, error: false, [name]: event.target.value})
         }
     
+    const onSubmit = (event) => {
+        // So that it doesnt refresh the screen
+        event.preventDefault()
+        //loading all the values
+        setValues({...values, erorr:false})
+        // api call from helpers
+        signup({name, email, password})
+        .then(data => {
+            console.log("DATA", data)
+            // quick way to check if the backend has accepted the new user - it would not return the email otherwise
+            // PS: have not sanitized the data
+            if (data.email === email) {
+                // reset the form to all blank. First to get all the values and then set it.
+                setValues({
+                    ...values,
+                    name: "",
+                    email: "",
+                    password: "",
+                    error: "",
+                    success: true
+                })
+            } else {
+                // if backend has sent any errors, i set the error and success flags accordingly
+                // PS: I could also push the error message to the UI..currently i am not doing it.
+                setValues({
+                    ...values,
+                    error: true,
+                    success: false
+                })
+            }
+        })
+        .catch(err => console.log(err))
+    }
+    
     const SignUpForm = () => {
         return (
             <div className="row">
@@ -60,7 +94,12 @@ const Signup = () => {
                              onChange={handleChange("password")}
                             />
                         </div>
-                        <button className="btn btn-success btn-block">Submit</button>
+                        <button
+                         className="btn btn-success btn-block"
+                         onClick={onSubmit}
+                        >
+                            Submit
+                        </button>
                     </form>
                 </div>
             </div>
@@ -70,7 +109,9 @@ const Signup = () => {
     return (
         <Base title="Signup Page" description="A Signup for the user">
             {SignUpForm()}
-            {/* <p>Test of signup page</p> */}
+            <p className="text-white text-center">
+                {JSON.stringify(values)}
+            </p>
         </Base>
     )
 }

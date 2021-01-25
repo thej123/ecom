@@ -1,7 +1,7 @@
 import React from 'react'
 import ImageHelper from './helper/imageHelper'
-import {Redirect} from 'react-router-dom'
-import {addItemToCart} from './helper/cartHelper'
+import { Redirect } from 'react-router-dom'
+import { addItemToCart, removeItemFromCart, loadCart, cartEmpty } from './helper/cartHelper'
 
 // TODO: Deal with this later
 const isAuthenticated = true
@@ -53,6 +53,7 @@ const Card = ({
                 <button
                     onClick={() => {
                         //  TODO: Handles this too!
+                        removeItemFromCart(product.id)
                         console.log("Product removed from cart")
                     }}
                     className="btn btn-block btn-outline-danger mt-2 mb-2"

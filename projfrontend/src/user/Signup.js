@@ -70,7 +70,9 @@ const Signup = () => {
                     // style (display) will only appear depending on success value.
                      style={{ display: success ? "": "none"}}
                     >
-                        New account created Successfully, Please login now.
+                        New account created Successfully, Please 
+                        {/* The Link will take you to all the routes in the Routes.js */}
+                        <Link to="/signin"> login now.</Link> 
                     </div>
                 </div>
             </div>

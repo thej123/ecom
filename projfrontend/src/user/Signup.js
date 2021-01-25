@@ -61,6 +61,35 @@ const Signup = () => {
         })
         .catch(err => console.log(err))
     }
+
+    const successMessage = () => {
+        return (
+            <div className="row">
+                <div className="col-md-6 offset-sm-3 text-left">
+                    <div className="alert alert-success"
+                    // style (display) will only appear depending on success value.
+                     style={{ display: success ? "": "none"}}
+                    >
+                        New account created Successfully, Please login now.
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    const errorMessage = () => {
+        return (
+            <div className="row">
+                <div className="col-md-6 offset-sm-3 text-left">
+                    <div className="alert alert-danger"
+                     style={{ display: error ? "": "none"}}
+                    >
+                        Check all fields again.
+                    </div>
+                </div>
+            </div>
+        )
+    }
     
     const SignUpForm = () => {
         return (
@@ -108,6 +137,8 @@ const Signup = () => {
 
     return (
         <Base title="Signup Page" description="A Signup for the user">
+            {successMessage()}
+            {errorMessage()}
             {SignUpForm()}
             <p className="text-white text-center">
                 {JSON.stringify(values)}

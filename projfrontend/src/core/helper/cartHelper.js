@@ -59,7 +59,7 @@ export const cartEmpty = (next) => {
         localStorage.removeItem("cart")
         // add back an empty cart variable back to the localStorage
         let cart = []
-        localStorage.setItem("cart". JSON.stringify(cart))
+        localStorage.setItem("cart", JSON.stringify(cart))
         // allow user to chain functions
         next()
     }

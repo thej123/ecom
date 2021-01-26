@@ -37,9 +37,9 @@ const Signin = () => {
         .then(data => {
             console.log("DATA", data);
             if (data.token) {
-                let sessionToken = data.token
+                // let sessionToken = data.token
                 // sets the 'jwt' key in window session i.e cookies
-                authenticate(sessionToken, () => {
+                authenticate(data, () => {
                     console.log("TOKEN ADDED")
                     // get the values and update didRedirect key
                     setValues({

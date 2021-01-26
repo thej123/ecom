@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { authenticate, isAuthenticated, signin } from '../auth/helper'
 import Base from '../core/Base'
 
@@ -41,11 +41,38 @@ const Signin = () => {
                 // sets the 'jwt' key in window session i.e cookies
                 authenticate(sessionToken, () => {
                     console.log("TOKEN ADDED")
+                    // get the values and update didRedirect key
+                    setValues({
+                        ...values,
+                        didRedirect: true
+                    })
+                })
+            } else {
+                setValues({
+                    ...values,
+                    loading: false
                 })
             }
 
         })
         .catch(err => console.log(err))
+    }
+
+    const performRedirect = () => {
+        if (isAuthenticated()) {
+            return <Redirect to="/" />
+        }
+    }
+
+    const loadingMessage = () => {
+        return (
+            // the 'div' will always be true. So the div will be returned is loading is true.
+            loading && (
+                <div className="alert alert-info">
+                    <h2>Loading...</h2>
+                </div>
+            )
+        )
     }
 
     const successMessage = () => {
@@ -118,8 +145,10 @@ const Signin = () => {
 
     return (
         <Base title="Signin Page" description="T-shirt store">
+            {loadingMessage()}
             {SignInForm()}
-        <p className="text-center">{JSON.stringify(values)}</p>
+            <p className="text-center">{JSON.stringify(values)}</p>
+            {performRedirect()}
         </Base>
     )
 }

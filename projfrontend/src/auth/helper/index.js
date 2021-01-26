@@ -57,6 +57,7 @@ export const isAuthenticated = () => {
     }
     if (localStorage.getItem("jwt")) {
         return JSON.parse(localStorage.getItem("jwt"))
+        // TODO: compare JWT with database json token
     }
     else {
         return false

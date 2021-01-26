@@ -1,4 +1,5 @@
 import React from 'react'
+import Menu from './Menu'
 
 const Base = ({
     //  some defaults for the input we get when some calls the Base component
@@ -9,6 +10,7 @@ const Base = ({
 }) => {
     return (
         <div>
+            <Menu></Menu>
             <div className="container-fluid">
                 <div className="jumbotron bg-dark text-white text-center">
                     <h2 className="display-4">{title}</h2>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { authenticate, isAuthenticated, signin } from '../auth/helper'
 import Base from '../core/Base'
 
 
@@ -25,41 +26,27 @@ const Signin = () => {
         (event) => {
             // setValue will first get the values from above. Then set error to false, then update the keys.
             setValues({...values, error: false, [name]: event.target.value})
-        }
+    }
     
-    // const onSubmit = (event) => {
-    //     // So that it doesnt refresh the screen
-    //     event.preventDefault()
-    //     //loading all the values
-    //     setValues({...values, erorr:false})
-    //     // api call from helpers
-    //     signup({name, email, password})
-    //     .then(data => {
-    //         console.log("DATA", data)
-    //         // quick way to check if the backend has accepted the new user - it would not return the email otherwise
-    //         // PS: have not sanitized the data
-    //         if (data.email === email) {
-    //             // reset the form to all blank. First to get all the values and then set it.
-    //             setValues({
-    //                 ...values,
-    //                 name: "",
-    //                 email: "",
-    //                 password: "",
-    //                 error: "",
-    //                 success: true
-    //             })
-    //         } else {
-    //             // if backend has sent any errors, i set the error and success flags accordingly
-    //             // PS: I could also push the error message to the UI..currently i am not doing it.
-    //             setValues({
-    //                 ...values,
-    //                 error: true,
-    //                 success: false
-    //             })
-    //         }
-    //     })
-    //     .catch(err => console.log(err))
-    // }
+    const onSubmit = (event) => {
+        event.preventDefault()
+        // get all the current values, reset errors to false, loading to true(so that we can disable the submit button while backend call is being made)
+        setValues({...values, error:false, loading:true})
+        // Below is equalent to sending a user object with 2 keys (email,password) in it.
+        signin({email, password})
+        .then(data => {
+            console.log("DATA", data);
+            if (data.token) {
+                let sessionToken = data.token
+                // sets the 'jwt' key in window session i.e cookies
+                authenticate(sessionToken, () => {
+                    console.log("TOKEN ADDED")
+                })
+            }
+
+        })
+        .catch(err => console.log(err))
+    }
 
     const successMessage = () => {
         return (
@@ -117,7 +104,7 @@ const Signin = () => {
                         </div>
                         <button
                          className="btn btn-success btn-block"
-                         onClick={()=>{}}
+                         onClick={onSubmit}
                         >
                             Submit
                         </button>

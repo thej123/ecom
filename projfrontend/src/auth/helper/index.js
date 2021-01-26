@@ -19,19 +19,26 @@ export const signup = (user) => {
 }
 
 export const signin = (user) => {
-    const formData = new FormData()
 
-    // our backend expects the name also to be given when signin in. but signin page only ask for email and password
-    // So we append the user's name into the formData before we send it to backend
+    const formData = new FormData()
+    
+    // This section is turned into a for loop below
+    // Destructuring user object
+    // const {email, password} = user;
+    // formData.append('email', email)
+    // formData.append('password', password)
+
+    // we are assigning every key in user object to the formdata object. So it will be email and password that gets passed to the formdata object
     for (const name in user) {
         formData.append(name, user[name])
     }
 
     return fetch(`${API}user/login/`, {
         method: 'POST',
-        body: FormData
+        body: formData
     })
     .then(response => {
+        console.log("SUCCESS", response);
         return response.json()
     })
     .catch(err => console.log(err))

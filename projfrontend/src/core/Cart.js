@@ -6,14 +6,15 @@ import { loadCart } from './helper/cartHelper'
 
 
 const Cart = () => {
-    
+    const [reload, setReload] = useState(false)
     const [products, setProducts] = useState([])
     // useEffect is used when you want something load before component is shown
     useEffect(() => {
         // loadCart -returns the value of 'cart' from window session
         // setProducts will set that value (object) to products variable in this component
         setProducts(loadCart())
-    }, [])
+    // The 'reload' will make sure to remount the cart component if anything changes in the useState i.e reload variable when we click 'remove from cart'
+    }, [reload])
 
     const loadAllProducts = (products) => {
         return (
@@ -25,6 +26,8 @@ const Cart = () => {
                     product={product}
                     removeFromCart={true}
                     addtoCart={false}
+                    reload={reload}
+                    setReload={setReload}
                     />
                 ))}
             </div>

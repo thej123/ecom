@@ -10,8 +10,13 @@ const Card = ({
     // variables given to the Card component, along with 2 more variables with defaults already set by us
     product,
     addtoCart = true,
-    removeFromCart = false
-
+    removeFromCart = false,
+    // to help with force mounting the cart page
+    reload = undefined,
+    // this has to named 'set' + 'variables name'
+    // function(f){return f}
+    setReload = f => f,
+    
 }) => {
 
     const [redirect, setRedirect] = useState(false)
@@ -56,6 +61,9 @@ const Card = ({
                     onClick={() => {
                         //  TODO: Handles this too!
                         removeItemFromCart(product.id)
+                        // change the boolean of reload to the opposite
+                        // So when you click on 'remove from cart' - it will mkae a change in the state of react - this will trigger a remount
+                        setReload(!reload)
                         console.log("Product removed from cart")
                     }}
                     className="btn btn-block btn-outline-danger mt-2 mb-2"

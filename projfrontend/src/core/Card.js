@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ImageHelper from './helper/imageHelper'
 import { Redirect } from 'react-router-dom'
-import { addItemToCart, removeItemFromCart, loadCart, cartEmpty } from './helper/cartHelper'
+import { addItemToCart, removeItemFromCart } from './helper/cartHelper'
+import { isAuthenticated } from '../auth/helper'
 
-// TODO: Deal with this later
-const isAuthenticated = true
 
 
 const Card = ({
@@ -14,13 +13,16 @@ const Card = ({
     removeFromCart = false
 
 }) => {
+
+    const [redirect, setRedirect] = useState(false)
+
     const cartTitle = product ? product.name : "A photo from pexels"
     const cartDescription = product ? product.description : "Default description"
     const cartPrice = product ? product.price : "Default"
 
     const addToCart = () => {
-        if (isAuthenticated) {
-            addItemToCart(product, () => {})
+        if (isAuthenticated()) {
+            addItemToCart(product, () => {setRedirect(true)})
             console.log("Added to cart")
         } else {
             console.log("Login Please!")
@@ -68,6 +70,7 @@ const Card = ({
         <div className="card text-white bg-dark border border-info">
             <div className="card-header lead">{cartTitle}</div>
             <div className="card-body">
+                {getAredirect(redirect)}
                 <ImageHelper product={product}/>
                 <p className="lead bg-success font-weight-normal text-wrap">
                     {cartDescription}
